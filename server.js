@@ -7,12 +7,13 @@ const dataBase = require('./db');
 
 const app = new Koa();
 
-app.use(koaBody({ // чтобы обработать тело запроса (обязательно объявить до Middleware где работаем с body)
+app.use(koaBody({ // чтобы обработать тело запроса
+  // (обязательно объявить до Middleware где работаем с body)
   urlencoded: true, // иначе тело будет undefined (тело будет строкой)
   // multipart: true, // если тело запроса закодировано через FormData
 }));
 
-app.use(cors()); // задаем правила для политики CORS 
+app.use(cors()); // задаем правила для политики CORS
 app.use(router()); // подключаем маршрутизатор
 
 const port = process.env.PORT || 9000;

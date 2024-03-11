@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 const { streamEvents } = require('http-event-stream');
-const dataBase = require('../../db');
 const uuid = require('uuid');
+const dataBase = require('../../db');
 
 const router = new Router(); // создали роутер
 
@@ -12,14 +12,14 @@ router.get('/sse', async (ctx) => {
       console.log('Потеряно соединение с ', lastEventId);
       return [];
     },
-    
+
     async stream(sse) {
       // Вызывается только один раз
       const id = uuid.v4(); // Присваиваем id для пользователя
-      for (const obj of dataBase.cache) {
+      for (let i = 0; i < dataBase.cache.length; i += 1) {
         sse.sendEvent({
           id,
-          data: JSON.stringify(obj),
+          data: JSON.stringify(dataBase.cache[i]),
         });
       }
       dataBase.listen((item) => { // Сохраняем callback (стрелочную функцию)
@@ -29,7 +29,7 @@ router.get('/sse', async (ctx) => {
         });
       });
       return () => {};
-    }
+    },
   });
 
   ctx.respond = false;
