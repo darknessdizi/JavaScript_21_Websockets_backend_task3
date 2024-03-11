@@ -16,7 +16,7 @@ router.get('/sse', async (ctx) => {
     async stream(sse) {
       // Вызывается только один раз
       const id = uuid.v4(); // Присваиваем id для пользователя
-      for (const obj of dataBase.hash) {
+      for (const obj of dataBase.cache) {
         sse.sendEvent({
           id,
           data: JSON.stringify(obj),
