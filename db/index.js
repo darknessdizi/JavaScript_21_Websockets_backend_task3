@@ -17,36 +17,23 @@ const dataBase = {
       time: Date.now(),
       text: null,
     };
-    if (this.count === 0) {
-      result.text = this.event.start;
-      this.cache.push(result);
-      this.listeners.forEach((callback) => callback(result));
-      this.count += 1;
-      return true;
-    }
     if (this.count === 51) {
       result.text = this.event.end;
       this.cache.push(result);
       this.listeners.forEach((callback) => callback(result));
       return false;
     }
-    if (number <= 50) {
+    if (this.count === 0) {
+      result.text = this.event.start;
+    } else if (number <= 50) {
       result.text = this.event.action;
-      this.cache.push(result);
-      this.listeners.forEach((callback) => callback(result));
-      this.count += 1;
-      return true;
-    }
-    if ((number > 50) && (number <= 90)) {
+    } else if ((number > 50) && (number <= 90)) {
       result.type = 'freekick';
       result.text = this.event.freekick;
-      this.cache.push(result);
-      this.listeners.forEach((callback) => callback(result));
-      this.count += 1;
-      return true;
+    } else {
+      result.type = 'goal';
+      result.text = this.event.goal;
     }
-    result.type = 'goal';
-    result.text = this.event.goal;
     this.cache.push(result);
     this.listeners.forEach((callback) => callback(result));
     this.count += 1;

@@ -29,11 +29,17 @@ server.listen(port, (err) => {
   console.log('Server is listening to 9000 port ************************');
 });
 
+function randomNumber(min, max) {
+  // случайное число от 2000 до 6000
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
 dataBase.addNewEvent();
-const timerId = setInterval(() => {
+setTimeout(function run() {
   console.log(`Номер хода ${dataBase.count}`);
   const status = dataBase.addNewEvent();
   if (!status) {
-    clearTimeout(timerId);
+    return;
   }
-}, 5000);
+  setTimeout(run, randomNumber(2000, 6000));
+}, randomNumber(2000, 6000));
